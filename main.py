@@ -1,6 +1,8 @@
+#This is only functional and I know is POORLY written. I've no time and I'm doing this just for needs.
 import os
 import shutil
 from pdf2image import convert_from_path
+
 # split pdf to png
 title = str(input("Select the name of the file here ('foo.pdf) ") or "tema14.pdf")
 
@@ -59,3 +61,12 @@ try: shutil.rmtree('./output')
 except: print("Failed to delete the folder. Is already deleted or protected?")
 try: shutil.rmtree('./input')
 except: print("Failed to delete the folder. Is already deleted or protected?")
+
+#translate 
+'''
+from deep_translator import GoogleTranslator
+
+translated = GoogleTranslator(source='auto', target='es').translate_file('output_file.txt')
+output_translated = open('output_file.txt')
+output_translated.write(translated)
+output_translated.close() '''
