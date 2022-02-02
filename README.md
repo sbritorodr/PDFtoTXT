@@ -2,6 +2,7 @@
 * shutil
 * pdf2image
 * natsort
+* deep_translator
 
 
 # Notes
