@@ -2,6 +2,7 @@
 import os
 import shutil
 from pdf2image import convert_from_path
+from natsort import natsorted # because python string sorts is kinda bad tbh
 
 title = str(input("Select the name of the file here ('foo.pdf)\n") or "foo.pdf")
 deleteCache = False
@@ -22,7 +23,7 @@ except:
 
 images = convert_from_path(f'{title}', 200)
 for i, image in enumerate(images):
-    image.save(f'./input/save_{i}.png')
+    image.save(f'./input/page_{i}.png')
 
 #os.system('for i in *.png; do tesseract -l fra $i  ${i%.*}; done')
 
@@ -43,7 +44,7 @@ try:
 except: 
     print('output folder already generated')
 
-
+# Tesseract main function
 for element in listfiles:
     os.system('tesseract -l fra ' + './input/'+ element + ' ./output/' + element)
 
@@ -53,9 +54,8 @@ listtxt = []
 for file in os.listdir('./output'):
     if file.endswith('.txt'):
         listtxt.append('./output/' + file)
-
 with open('output_ocr_file.txt','wb') as wfd:
-    for f in listtxt:
+    for f in natsorted(listtxt): # Sorted all pages
         with open(f,'rb') as fd:
             shutil.copyfileobj(fd, wfd)
 

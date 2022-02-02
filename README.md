@@ -1,3 +1,9 @@
+# pip requirements
+* shutil
+* pdf2image
+* natsort
+
+
 # Notes
 install module [argos - translate](https://github.com/argosopentech/argos-translate) and implement this on the project. 
 Either by adding a package in pip (argostranslate) and using the cli edition
