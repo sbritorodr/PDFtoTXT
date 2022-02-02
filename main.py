@@ -25,7 +25,8 @@ except:
 images = convert_from_path(f'{title}', 200)
 for i, image in enumerate(images):
     image.save(f'./input/page_{i}.png')
-
+# free memory
+del pdf_file
 #os.system('for i in *.png; do tesseract -l fra $i  ${i%.*}; done')
 
 
@@ -48,7 +49,8 @@ except:
 # Tesseract main function
 for element in listfiles:
     os.system('tesseract -l fra ' + './input/'+ element + ' ./output/' + element)
-
+# Free memory
+del listfiles
 #translate from gogle
 #there's a 5,000 character limit on google translator :(
 
@@ -71,7 +73,8 @@ for file in natsorted(listtxt_trans):
     output_translated.close() 
     i = i+1
 
-
+# Free memory
+del listtxt_trans
 
 #merge all into one txt
 listtxt = []
@@ -82,6 +85,9 @@ with open('output_ocr_file.txt','wb') as wfd:
     for f in natsorted(listtxt): # Sorted all pages
         with open(f,'rb') as fd:
             shutil.copyfileobj(fd, wfd)
+
+# Free memory
+del listtxt
 
 # delete all evidence
 if deleteCache:
