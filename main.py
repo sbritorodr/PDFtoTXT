@@ -59,8 +59,8 @@ with open('output_ocr_file.txt','wb') as wfd:
         with open(f,'rb') as fd:
             shutil.copyfileobj(fd, wfd)
 
-#delete all evidence
-if deleteCache == True:
+# delete all evidence
+if deleteCache:
     try: shutil.rmtree('./output')
     except: print("Failed to delete the folder. Is already deleted or protected?")
     try: shutil.rmtree('./input')
