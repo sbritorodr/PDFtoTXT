@@ -91,20 +91,3 @@ if deleteCache:
     except: print("Failed to delete the folder. Is already deleted or protected?")
     try: shutil.rmtree('./input')
     except: print("Failed to delete the folder. Is already deleted or protected?")
-
-
-# Google Translator has a char limit of 5,000, so we need to split the txt files again,
-# translate each text individually and re-merge all into one
-
-
-
-#translate from gogle
-#there's a 5,000 character limit on google translator :(
-
-#from deep_translator import GoogleTranslator
-
-
-#translated = GoogleTranslator(source='auto', target='es').translate_file('output_file.txt')
-#output_translated = open('output_file.txt')
-#output_translated.write(translated)
-#output_translated.close() 
