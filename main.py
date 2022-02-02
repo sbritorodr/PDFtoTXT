@@ -3,8 +3,12 @@ import os
 import shutil
 from pdf2image import convert_from_path
 
-# split pdf to png
-title = str(input("Select the name of the file here ('foo.pdf) ") or "tema14.pdf")
+title = str(input("Select the name of the file here ('foo.pdf)\n") or "foo.pdf")
+deleteCache = False
+if str(input('Delete cache? y/n \n')) == 'n':
+    deleteCache = False
+# parse pdf into multiple png's
+
 
 pdf_file = []
 for file in os.listdir('./'):
@@ -22,16 +26,16 @@ for i, image in enumerate(images):
 
 #os.system('for i in *.png; do tesseract -l fra $i  ${i%.*}; done')
 
-#formattype = str(input("Enter your desired format type (ej. 'png') here: \n") or "png") #must not have dots
-formattype = "png"
-listfiles = []
+
+
 
 #this loop selects only the desired format type
+formattype = "png"
+listfiles = []
 for file in os.listdir('./input'):
     if file.endswith("." + formattype):
         listfiles.append(file)
 
-#print(listfiles)
 
 try: 
     print('creating the output folder')
@@ -50,23 +54,30 @@ for file in os.listdir('./output'):
     if file.endswith('.txt'):
         listtxt.append('./output/' + file)
 
-with open('output_file.txt','wb') as wfd:
+with open('output_ocr_file.txt','wb') as wfd:
     for f in listtxt:
         with open(f,'rb') as fd:
             shutil.copyfileobj(fd, wfd)
 
 #delete all evidence
+if deleteCache == True:
+    try: shutil.rmtree('./output')
+    except: print("Failed to delete the folder. Is already deleted or protected?")
+    try: shutil.rmtree('./input')
+    except: print("Failed to delete the folder. Is already deleted or protected?")
 
-try: shutil.rmtree('./output')
-except: print("Failed to delete the folder. Is already deleted or protected?")
-try: shutil.rmtree('./input')
-except: print("Failed to delete the folder. Is already deleted or protected?")
 
-#translate 
-'''
-from deep_translator import GoogleTranslator
+# Google Translator has a char limit of 5,000, so we need to split the txt files again,
+# translate each text individually and re-merge all into one
 
-translated = GoogleTranslator(source='auto', target='es').translate_file('output_file.txt')
-output_translated = open('output_file.txt')
-output_translated.write(translated)
-output_translated.close() '''
+
+
+#translate from gogle
+#there's a 5,000 character limit on google translator :(
+
+# from deep_translator import GoogleTranslator
+
+# translated = GoogleTranslator(source='auto', target='es').translate_file('output_file.txt')
+# output_translated = open('output_file.txt')
+# output_translated.write(translated)
+# output_translated.close() 
