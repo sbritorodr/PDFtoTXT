@@ -1,6 +1,7 @@
 #! ./pdf_to_txt/
 #This is only functional and I know is POORLY written. I've no time and I'm doing this just for needs.
 import os
+import click
 import shutil
 from pdf2image import convert_from_path
 from natsort import natsorted # because python string sorts is kinda bad tbh
@@ -8,9 +9,15 @@ from deep_translator import GoogleTranslator
 
 def USRInput():
     USRInput.title = str(input("Select the name of the file here ('foo.pdf)\n") or "foo.pdf")
+    USRInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
     USRInput.deleteCache = False
-    if str(input('Delete cache? y/n \n')) == 'n':
-        USRInput.deleteCache = False
+    USRInput.translate = False
+    if click.confirm('Delete folders?'):
+        USRInput.deleteCache = True
+    if click.confirm(" Translate to spanish?"):
+        USRInput.translate = True
+
+    
 
 def PDFtoPNG(): # convert pdf into multiple png's
     pdf_file = []
@@ -70,19 +77,27 @@ def translatefromGoogle():
         output_translated.close() 
         i = i+1 #sorry for this gibberish, but for some reason I can't find any better way
 
-
-
-#merge all into one txt
+#merge all into one txt (Translated)
 def mergeALLtxt():
     listtxt = []
-    for file in os.listdir('./output_translated'):
+    for file in os.listdir('./output'):
         if file.endswith('.txt'):
-            listtxt.append('./output_translated/' + file)
-    with open('output_ocr_file.txt','wb') as wfd:
+            listtxt.append('./output/' + file)
+    with open(USRInput.output_ocr_file,'wb') as wfd:
         for f in natsorted(listtxt): # Sorted all pages
             with open(f,'rb') as fd:
                 shutil.copyfileobj(fd, wfd)
 
+#merge all into one txt (Translated)
+def mergeALLtxtTranslated():
+    listtxt = []
+    for file in os.listdir('./output_translated'):
+        if file.endswith('.txt'):
+            listtxt.append('./output_translated/' + file)
+    with open(USRInput.output_ocr_file,'wb') as wfd:
+        for f in natsorted(listtxt): # Sorted all pages
+            with open(f,'rb') as fd:
+                shutil.copyfileobj(fd, wfd)
 
 
 # delete all evidence
@@ -95,13 +110,18 @@ def rmEverything():
         try: shutil.rmtree('./input')
         except: print("Failed to delete the folder. Is already deleted or protected?")
 
-if __name__ == "__main__":
+def main():
     USRInput()
     PDFtoPNG()
     fileSelector()
     genOutputfolder()
     OCRMain() #This ends the default program and asks the user for translation
-    genOutputTrans()
-    translatefromGoogle()
-    mergeALLtxt()
+    if USRInput.translate:
+        genOutputTrans()
+        translatefromGoogle()
+        mergeALLtxtTranslated()
+    else: mergeALLtxt()
     rmEverything()
+    
+if __name__ == "__main__":
+    main()
