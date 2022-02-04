@@ -8,7 +8,7 @@ from natsort import natsorted # because python string sorts is kinda bad tbh
 from deep_translator import GoogleTranslator
 
 def USRInput():
-    USRInput.title = str(input("Select the name of the file here ('foo.pdf)\n") or "foo.pdf")
+    USRInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "input.pdf")
     USRInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
     USRInput.deleteCache = False
     USRInput.translate = False
