@@ -44,7 +44,6 @@ $ python3 pdftotxt.py
 # Uninstall
 1. Delete pdftotxt.py
 2. Delete all dependencies of pip and tesseract
-
 ```sh
 $ pip uninstall shutil pdf2image natsort deep_translator inquirer
 ```
