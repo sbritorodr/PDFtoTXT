@@ -40,6 +40,15 @@ $ python3 pdftotxt.py
 ```
 3. Follow up instructions.
 4. **You can't translate if there's +5,000 characters on each page of your document**
+5. If your desired language destination is not avaliable, you can add it by editing the script (70...75). Check if it works and leave a PR if you want too:
+```python
+70    questions = [
+71        inq.List('lang',
+72                message="Select which language you want to use",
+73                choices=['spanish', 'english', 'french','italian', 'portuguese', 'german'] # add here your language/s
+74            ),
+75    ]
+```
 
 # Uninstall
 1. Delete pdftotxt.py
