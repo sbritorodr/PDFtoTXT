@@ -3,6 +3,7 @@
 * pdf2image
 * natsort
 * deep_translator
+* inquirer
 
 
 # Notes
