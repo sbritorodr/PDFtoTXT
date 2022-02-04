@@ -50,7 +50,6 @@ $ python3 pdftotxt.py
 75    ]
 ```
 
-
 # Uninstall
 1. Delete pdftotxt.py
 2. Delete all dependencies of pip and tesseract
