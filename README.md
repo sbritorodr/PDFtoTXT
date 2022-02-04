@@ -1,8 +1,27 @@
-# pip requirements
+# PDFtoTXT
+Write all text info from a PDF, even if you can't copy-paste manually.
+It also can translate on-the-fly.
+
+**Tested on python 3.10**
+
+# Requirements
 * shutil
 * pdf2image
 * natsort
 * deep_translator
+* Inquirer
+* Tesseract. Installed from a package manager
+
+# Instalation
+1. Clone this repo 
+```sh
+$ git clone https://github.com/sbritorodr/pdf_to_txt.git
+```
+2. Install tesseract
+
+```sh
+$ sudo pacman -S tesseract
+```
 
 
 # Notes
