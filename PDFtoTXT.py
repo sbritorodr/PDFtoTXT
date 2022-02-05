@@ -7,16 +7,16 @@ from pdf2image import convert_from_path
 from natsort import natsorted # because python string sorts is kinda bad tbh
 from deep_translator import GoogleTranslator
 
-def USRInput():
-    USRInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "input.pdf")
-    USRInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
-    USRInput.deleteCache = True
+def usrInput():
+    usrInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "input.pdf")
+    usrInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
+    usrInput.deleteCache = True
     if not click.confirm('Delete folders?', default=True): # by default it will delete the folders
-        USRInput.deleteCache = False
+        usrInput.deleteCache = False
 
-    USRInput.translate = False
+    usrInput.translate = False
     if click.confirm(" Translate?", default= False):
-        USRInput.translate = True
+        usrInput.translate = True
 
     
 
@@ -31,7 +31,7 @@ def PDFtoPNG(): # convert pdf into multiple png's
     except FileExistsError: 
         print('input folder already generated')
 
-    images = convert_from_path(f'{USRInput.title}', 200)
+    images = convert_from_path(f'{usrInput.title}', 200)
     for i, image in enumerate(images):
         image.save(f'./input/page_{i}.png')
 
@@ -52,7 +52,7 @@ def genOutputfolder():
         print('output folder already generated')
 
 # Tesseract main function
-def OCRMain():
+def ocrMain():
     for element in fileSelector.listfiles:
         os.system('tesseract -l fra ' + './input/'+ element + ' ./output/' + element)
 
@@ -65,7 +65,7 @@ def genOutputTrans():
     except: 
         print('output folder already generated')
 
-def TranslateOpt():
+def translateOpt():
     import inquirer as inq
     questions = [
         inq.List('lang',
@@ -74,7 +74,7 @@ def TranslateOpt():
             ),
     ]
     answers = inq.prompt(questions)
-    TranslateOpt.answers = answers
+    translateOpt.answers = answers
     print(type(answers))
     print(answers['lang'])
 
@@ -86,7 +86,7 @@ def translatefromGoogle():
             listtxt_trans.append('./output/' + file)
     i = 0
     for file in natsorted(listtxt_trans):
-        translated = GoogleTranslator(source='auto', target=TranslateOpt.answers['lang']).translate_file(file)
+        translated = GoogleTranslator(source='auto', target=translateOpt.answers['lang']).translate_file(file)
         output_translated = open(f'./output_translated/{i}.txt', 'w')
         output_translated.write(translated)
         output_translated.close() 
@@ -98,7 +98,7 @@ def mergeALLtxt():
     for file in os.listdir('./output'):
         if file.endswith('.txt'):
             listtxt.append('./output/' + file)
-    with open(USRInput.output_ocr_file,'wb') as wfd:
+    with open(usrInput.output_ocr_file,'wb') as wfd:
         for f in natsorted(listtxt): # Sorted all pages
             with open(f,'rb') as fd:
                 shutil.copyfileobj(fd, wfd)
@@ -109,7 +109,7 @@ def mergeALLtxtTranslated():
     for file in os.listdir('./output_translated'):
         if file.endswith('.txt'):
             listtxt.append('./output_translated/' + file)
-    with open(USRInput.output_ocr_file,'wb') as wfd:
+    with open(usrInput.output_ocr_file,'wb') as wfd:
         for f in natsorted(listtxt): # Sorted all pages
             with open(f,'rb') as fd:
                 shutil.copyfileobj(fd, wfd)
@@ -117,7 +117,7 @@ def mergeALLtxtTranslated():
 
 # delete all evidence
 def rmEverything():
-    if USRInput.deleteCache:
+    if usrInput.deleteCache:
         try: 
             shutil.rmtree('./output')
         except FileNotFoundError: 
@@ -132,14 +132,14 @@ def rmEverything():
             print("Failed to delete the folder. Is already deleted or protected?")
 
 def main():
-    USRInput()
-    if USRInput.translate:
-        TranslateOpt()
+    usrInput()
+    if usrInput.translate:
+        translateOpt()
     PDFtoPNG()
     fileSelector()
     genOutputfolder()
-    OCRMain() #This ends the default program and asks the user for translation
-    if USRInput.translate:
+    ocrMain() #This ends the default program and asks the user for translation
+    if usrInput.translate:
         genOutputTrans()
         translatefromGoogle()
         mergeALLtxtTranslated()
