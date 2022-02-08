@@ -31,10 +31,11 @@ def PDFtoPNG(): # convert pdf into multiple png's
     if usrInput.title == "NONE":
         usrInput.title = pdf_file[0]
     try: 
-        print('creating the input folder\n')
+        #print('creating the input folder\n')
         os.mkdir('./.input')
     except FileExistsError: 
-        print('input folder already generated\n')
+        #print('input folder already generated\n')
+        pass
 
     images = convert_from_path(f'{usrInput.title}', 200)
     for i, image in enumerate(images):
@@ -53,10 +54,11 @@ def fileSelector():
 
 def genOutputfolder():
     try: 
-        print('creating the output folder\n')
+        #print('creating the output folder\n')
         os.mkdir('./.output')
-    except: 
-        print('output folder already generated\n')
+    except FileExistsError: 
+        #print('output folder already generated\n')
+        pass
 
 # Tesseract main function
 def ocrMain():
@@ -73,10 +75,11 @@ def ocrMain():
 #there's a 5,000 character limit on google translator :(
 def genOutputTrans():
     try: 
-        print('creating the output folder')
+        #print('creating the output folder')
         os.mkdir('./.output_translated')
-    except: 
-        print('output folder already generated')
+    except FileExistsError: 
+        #print('output folder already generated')
+        pass
 
 def translateOpt():
     import inquirer as inq
@@ -88,8 +91,6 @@ def translateOpt():
     ]
     answers = inq.prompt(questions)
     translateOpt.answers = answers
-    print(type(answers))
-    print(answers['lang'])
 
 
 def translatefromGoogle():
@@ -138,15 +139,15 @@ def rmEverything():
         try: 
             shutil.rmtree('./.output')
         except FileNotFoundError: 
-            print("Failed to delete the folder. Is already deleted or protected?")
+            print("Failed to delete ./.output. Is already deleted or protected?")
         try: 
             shutil.rmtree('./.output_translated')
         except FileNotFoundError: 
-            print("Failed to delete the folder. Is already deleted or protected?")
+            print("Failed to delete ./.output_translated. Is already deleted or protected?")
         try: 
             shutil.rmtree('./.input')
         except FileNotFoundError: 
-            print("Failed to delete the folder. Is already deleted or protected?")
+            print("Failed to delete ./.input. Is already deleted or protected?")
 
 def main():
     usrInput()
