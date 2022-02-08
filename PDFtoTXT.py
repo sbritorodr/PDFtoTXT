@@ -8,7 +8,7 @@ from natsort import natsorted # because python string sorts is kinda bad tbh
 from deep_translator import GoogleTranslator
 
 def usrInput():
-    usrInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "input.pdf")
+    usrInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "NONE")
     usrInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
     usrInput.deleteCache = True
     if not click.confirm('Delete folders?', default=True): # by default it will delete the folders
@@ -21,10 +21,13 @@ def usrInput():
     
 
 def PDFtoPNG(): # convert pdf into multiple png's
+    # auto selection of pdf
     pdf_file = []
     for file in os.listdir('./'):
         if file.endswith(".pdf"):
             pdf_file.append(file)
+    if usrInput.title == "NONE":
+        usrInput.title = pdf_file[0]
     try: 
         print('creating the input folder')
         os.mkdir('./input')
