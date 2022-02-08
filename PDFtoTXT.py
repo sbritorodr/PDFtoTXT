@@ -6,9 +6,10 @@ import shutil
 from pdf2image import convert_from_path
 from natsort import natsorted # because python string sorts is kinda bad tbh
 from deep_translator import GoogleTranslator
+import progressbar
 
 def usrInput():
-    usrInput.title = str(input("Select the name of the file here ('input.pdf)\n") or "NONE")
+    usrInput.title = str(input("Select the name of the file here\n") or "NONE")
     usrInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
     usrInput.deleteCache = True
     if not click.confirm('Delete folders?', default=True): # by default it will delete the folders
@@ -21,6 +22,7 @@ def usrInput():
     
 
 def PDFtoPNG(): # convert pdf into multiple png's
+    pbar = progressbar.ProgressBar(widgets=['Reading... ', progressbar.AnimatedMarker()]).start()
     # auto selection of pdf
     pdf_file = []
     for file in os.listdir('./'):
@@ -29,42 +31,50 @@ def PDFtoPNG(): # convert pdf into multiple png's
     if usrInput.title == "NONE":
         usrInput.title = pdf_file[0]
     try: 
-        print('creating the input folder')
-        os.mkdir('./input')
+        print('creating the input folder\n')
+        os.mkdir('./.input')
     except FileExistsError: 
-        print('input folder already generated')
+        print('input folder already generated\n')
 
     images = convert_from_path(f'{usrInput.title}', 200)
     for i, image in enumerate(images):
-        image.save(f'./input/page_{i}.png')
+        pbar.update(i)
+        image.save(f'./.input/page_{i}.png')
+    pbar.finish()
 
 
 #this loop selects only the desired format type
 def fileSelector():
     formattype = "png"
     fileSelector.listfiles = []
-    for file in os.listdir('./input'):
+    for file in os.listdir('./.input'):
         if file.endswith("." + formattype):
             fileSelector.listfiles.append(file)
 
 def genOutputfolder():
     try: 
-        print('creating the output folder')
-        os.mkdir('./output')
+        print('creating the output folder\n')
+        os.mkdir('./.output')
     except: 
-        print('output folder already generated')
+        print('output folder already generated\n')
 
 # Tesseract main function
 def ocrMain():
+    pbar = progressbar.ProgressBar(widgets=['Writing...',progressbar.SimpleProgress(),progressbar.Percentage(), progressbar.Bar(),
+               ' ', progressbar.ETA(), ' ', progressbar.FileTransferSpeed()], maxval=len(fileSelector.listfiles)).start()
+    i = 0
     for element in fileSelector.listfiles:
-        os.system('tesseract -l fra ' + './input/'+ element + ' ./output/' + element)
+        os.system('tesseract -l fra ' + './.input/'+ element + ' ./.output/' + element + '>/dev/null 2>&1') # the last part is for "disabling" output for tesseract
+        pbar.update(i)
+        i =i+1
+    pbar.finish()
 
 #translate from gogle
 #there's a 5,000 character limit on google translator :(
 def genOutputTrans():
     try: 
         print('creating the output folder')
-        os.mkdir('./output_translated')
+        os.mkdir('./.output_translated')
     except: 
         print('output folder already generated')
 
@@ -84,23 +94,27 @@ def translateOpt():
 
 def translatefromGoogle():
     listtxt_trans = []
-    for file in os.listdir('./output'):
+    for file in os.listdir('./.output'):
         if file.endswith('.txt'):
-            listtxt_trans.append('./output/' + file)
+            listtxt_trans.append('./.output/' + file)
+    pbar = progressbar.ProgressBar(widgets=['Translating...',progressbar.SimpleProgress(),progressbar.Percentage(), progressbar.Bar(),
+            ' ', progressbar.ETA(), ' ', progressbar.FileTransferSpeed()], maxval=len(fileSelector.listfiles)).start()
     i = 0
     for file in natsorted(listtxt_trans):
         translated = GoogleTranslator(source='auto', target=translateOpt.answers['lang']).translate_file(file)
-        output_translated = open(f'./output_translated/{i}.txt', 'w')
+        output_translated = open(f'./.output_translated/{i}.txt', 'w')
         output_translated.write(translated)
-        output_translated.close() 
+        output_translated.close()
+        pbar.update(i) 
         i = i+1 #sorry for this gibberish, but for some reason I can't find any better way
+    pbar.finish()
 
 #merge all into one txt (Translated)
 def mergeALLtxt():
     listtxt = []
-    for file in os.listdir('./output'):
+    for file in os.listdir('./.output'):
         if file.endswith('.txt'):
-            listtxt.append('./output/' + file)
+            listtxt.append('./.output/' + file)
     with open(usrInput.output_ocr_file,'wb') as wfd:
         for f in natsorted(listtxt): # Sorted all pages
             with open(f,'rb') as fd:
@@ -109,9 +123,9 @@ def mergeALLtxt():
 #merge all into one txt (Translated)
 def mergeALLtxtTranslated():
     listtxt = []
-    for file in os.listdir('./output_translated'):
+    for file in os.listdir('./.output_translated'):
         if file.endswith('.txt'):
-            listtxt.append('./output_translated/' + file)
+            listtxt.append('./.output_translated/' + file)
     with open(usrInput.output_ocr_file,'wb') as wfd:
         for f in natsorted(listtxt): # Sorted all pages
             with open(f,'rb') as fd:
@@ -122,15 +136,15 @@ def mergeALLtxtTranslated():
 def rmEverything():
     if usrInput.deleteCache:
         try: 
-            shutil.rmtree('./output')
+            shutil.rmtree('./.output')
         except FileNotFoundError: 
             print("Failed to delete the folder. Is already deleted or protected?")
         try: 
-            shutil.rmtree('./output_translated')
+            shutil.rmtree('./.output_translated')
         except FileNotFoundError: 
             print("Failed to delete the folder. Is already deleted or protected?")
         try: 
-            shutil.rmtree('./input')
+            shutil.rmtree('./.input')
         except FileNotFoundError: 
             print("Failed to delete the folder. Is already deleted or protected?")
 
