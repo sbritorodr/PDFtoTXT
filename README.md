@@ -1,5 +1,5 @@
 # PDFtoTXT
-Write all text info from a PDF, even if you can't copy-paste it manually or is from an image and translate it *on-the-fly*.
+Write all text info from a PDF, even if you can't copy-paste it manually or if it's from an image and translate it *on-the-fly*.
 
  <p style="text-align: center;font-size:1.35rem"> <b> Tested on <span style="color:#135BE3"> py</span><span style="color:#EBBE0D">thon 3.10</span> </b> </p>
 
@@ -49,7 +49,7 @@ $ python3 pdftotxt.py
 70    questions = [
 71        inq.List('lang',
 72                message="Select which language you want to use",
-73                choices=['spanish', 'english', 'french','italian', 'portuguese', 'german'] # add here your language/s
+73                choices=['spanish', 'english', 'french','italian', 'portuguese', 'german']
 74            ),
 75    ]
 ```
