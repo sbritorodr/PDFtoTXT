@@ -36,11 +36,11 @@ Download tessdata files: https://tesseract-ocr.github.io/tessdoc/Data-Files.html
 $ pip install shutil pdf2image natsort deep_translator inquirer progressbar
 ```
 # Usage
-1. Place `pdftotxt.py` where your pdf's are (Or move your pdf into the folder pdf2txt if you cloned the repo)
+1. Place `PDFtoTXT.py` where your pdf's are (Or move your pdf into the folder pdf2txt if you cloned the repo)
 2. Execute the script under python3:
 
 ```sh
-$ python3 pdftotxt.py
+$ python3 PDFtoTXT.py
 ```
 3. Follow up the instructions. By default, the program picks any pdf from the folder, disables translation and merges all into `./output_ocr_file.txt`
 4. <span style="color:#AF0E0E">**You cannot translate your document if there's +5,000 characters on each page**</span>
@@ -55,7 +55,7 @@ $ python3 pdftotxt.py
 ```
 
 # Uninstall
-1. Delete `pdftotxt.py`
+1. Delete `PDFtoTXT.py`
 2. Delete all dependencies of pip and `tesseract`
 ```sh
 $ pip uninstall shutil pdf2image natsort deep_translator inquirer progressbar
