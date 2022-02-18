@@ -63,7 +63,7 @@ def genOutputfolder():
 # Tesseract main function
 def ocrMain():
     pbar = progressbar.ProgressBar(widgets=['Writing...',progressbar.SimpleProgress(),progressbar.Percentage(), progressbar.Bar(),
-               ' ', progressbar.ETA(), ' ', progressbar.FileTransferSpeed()], maxval=len(fileSelector.listfiles)).start()
+               ' ', progressbar.ETA()], maxval=len(fileSelector.listfiles)).start()
     i = 0
     for element in fileSelector.listfiles:
         os.system('tesseract -l fra ' + './.input/'+ element + ' ./.output/' + element + '>/dev/null 2>&1') # the last part is for "disabling" output for tesseract
@@ -99,7 +99,7 @@ def translatefromGoogle():
         if file.endswith('.txt'):
             listtxt_trans.append('./.output/' + file)
     pbar = progressbar.ProgressBar(widgets=['Translating...',progressbar.SimpleProgress(),progressbar.Percentage(), progressbar.Bar(),
-            ' ', progressbar.ETA(), ' ', progressbar.FileTransferSpeed()], maxval=len(fileSelector.listfiles)).start()
+            ' ', progressbar.ETA()], maxval=len(fileSelector.listfiles)).start()
     i = 0
     for file in natsorted(listtxt_trans):
         translated = GoogleTranslator(source='auto', target=translateOpt.answers['lang']).translate_file(file)
