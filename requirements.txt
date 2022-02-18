@@ -1,0 +1,5 @@
+pdf2image==1.16.0
+natsort==8.1.0
+deep-translator==1.5.5
+inquirer==2.9.1
+progressbar==2.5
