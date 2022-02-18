@@ -1,5 +1,5 @@
 # PDFtoTXT
-Write all text info from a PDF, even if you can't copy-paste it manually or if it's from an image and translate it *on-the-fly*.
+Write all text info from a PDF, even if you can't copy-paste it manually or is from an image and translate it *on-the-fly*.
 
  <p style="text-align: center;font-size:1.35rem"> <b> Tested on <span style="color:#135BE3"> py</span><span style="color:#EBBE0D">thon 3.10</span> </b> </p>
 
@@ -7,7 +7,6 @@ Write all text info from a PDF, even if you can't copy-paste it manually or if i
 ## From a package manager (pacman, apt...)
 * Tesseract
 ## From pip
-* shutil
 * pdf2image
 * natsort
 * deep_translator
@@ -33,14 +32,14 @@ Download tessdata files: https://tesseract-ocr.github.io/tessdoc/Data-Files.html
 
 4. Install all pip requirements. Just copypaste this onto your terminal. Use pip3 instead if it doesn't work:
 ```sh
-$ pip install shutil pdf2image natsort deep_translator inquirer progressbar
+$ pip install -r requirements.txt
 ```
 # Usage
-1. Place `PDFtoTXT.py` where your pdf's are (Or move your pdf into the folder pdf2txt if you cloned the repo)
+1. Place `pdftotxt.py` where your pdf's are (Or move your pdf into the folder pdf2txt if you cloned the repo)
 2. Execute the script under python3:
 
 ```sh
-$ python3 PDFtoTXT.py
+$ python3 pdftotxt.py
 ```
 3. Follow up the instructions. By default, the program picks any pdf from the folder, disables translation and merges all into `./output_ocr_file.txt`
 4. <span style="color:#AF0E0E">**You cannot translate your document if there's +5,000 characters on each page**</span>
@@ -49,16 +48,16 @@ $ python3 PDFtoTXT.py
 70    questions = [
 71        inq.List('lang',
 72                message="Select which language you want to use",
-73                choices=['spanish', 'english', 'french','italian', 'portuguese', 'german']
+73                choices=['spanish', 'english', 'french','italian', 'portuguese', 'german'] # add here your language/s
 74            ),
 75    ]
 ```
 
 # Uninstall
-1. Delete `PDFtoTXT.py`
-2. Delete all dependencies of pip and `tesseract`
+1. Delete `pdftotxt.py`
+2. Delete all installed dependencies of pip and `tesseract`
 ```sh
-$ pip uninstall shutil pdf2image natsort deep_translator inquirer progressbar
+$ pip uninstall -r requirements.txt
 ```
 ```sh
 $ sudo pacman -Rs tesseract
