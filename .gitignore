@@ -1,0 +1,11 @@
+# Ignore generated folders from the project
+/.input/
+/.output/
+/.output_translated/
+
+# PDF inputs and txt outputs
+*.txt
+*.TXT
+*.pdf
+*.PDF
+!requirements.txt
