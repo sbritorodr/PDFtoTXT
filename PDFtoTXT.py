@@ -5,7 +5,7 @@ import click
 import shutil
 from pdf2image import convert_from_path
 from natsort import natsorted # because python string sorts is kinda bad tbh
-from deep_translator import GoogleTranslator
+import deep_translator
 import progressbar
 
 def usrInput():
@@ -102,7 +102,12 @@ def translatefromGoogle():
             ' ', progressbar.ETA()], maxval=len(fileSelector.listfiles)).start()
     i = 0
     for file in natsorted(listtxt_trans):
-        translated = GoogleTranslator(source='auto', target=translateOpt.answers['lang']).translate_file(file)
+        try:
+            translated = deep_translator.GoogleTranslator(source='auto', target=translateOpt.answers['lang']).translate_file(file)
+        except deep_translator.exceptions.NotValidLength: #if it's over 5.000, ignore that file and print an error
+            translated = ""
+            print("Page #", i ," is over 5.000 characters. Ignoring")
+            pass
         output_translated = open(f'./.output_translated/{i}.txt', 'w')
         output_translated.write(translated)
         output_translated.close()
@@ -132,22 +137,12 @@ def mergeALLtxtTranslated():
             with open(f,'rb') as fd:
                 shutil.copyfileobj(fd, wfd)
 
-
-# delete all evidence
-def rmEverything():
+def rmFolder(folder_name):
     if usrInput.deleteCache:
         try: 
-            shutil.rmtree('./.output')
+            shutil.rmtree(folder_name)
         except FileNotFoundError: 
-            print("Failed to delete ./.output. Is already deleted or protected?")
-        try: 
-            shutil.rmtree('./.output_translated')
-        except FileNotFoundError: 
-            print("Failed to delete ./.output_translated. Is already deleted or protected?")
-        try: 
-            shutil.rmtree('./.input')
-        except FileNotFoundError: 
-            print("Failed to delete ./.input. Is already deleted or protected?")
+            print("Failed to delete", folder_name ,"Is already deleted or protected?")
 
 def main():
     usrInput()
@@ -162,7 +157,10 @@ def main():
         translatefromGoogle()
         mergeALLtxtTranslated()
     else: mergeALLtxt()
-    rmEverything()
+    rmFolder('./.output')
+    if usrInput.translate:
+        rmFolder('./.output_translated')
+    rmFolder('./.input')
     
 if __name__ == "__main__":
     main()
