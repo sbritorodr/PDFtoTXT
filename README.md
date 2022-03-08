@@ -6,6 +6,7 @@ Write all text info from a PDF, even if you can't copy-paste it manually or is f
 # Requirements
 ## From a package manager (pacman, apt...)
 * Tesseract
+* plopper
 ## From pip
 * pdf2image
 * natsort
@@ -20,10 +21,10 @@ $ git clone https://github.com/sbritorodr/pdf_to_txt.git
 ```
 
 
-2. Install tesseract using any package manager.
+2. Install tesseract using any package manager. (pacman, apt, brew...)
 
 ```sh
-$ sudo pacman -S tesseract
+$ sudo pacman -S tesseract plopper
 ```
 3. Don't forget to add trained data to tesseract.
 Download tessdata files: https://tesseract-ocr.github.io/tessdoc/Data-Files.html and place it in the folder said in the [tesseract documentation](https://tesseract-ocr.github.io/tessdoc/).
@@ -55,11 +56,11 @@ $ python3 pdftotxt.py
 
 # Uninstall
 1. Delete `pdftotxt.py`
-2. Delete all installed dependencies of pip and `tesseract`
+2. Delete all installed dependencies of pip, `tesseract` and `plopper`
 ```sh
 $ pip uninstall -r requirements.txt
 ```
 ```sh
-$ sudo pacman -Rs tesseract
+$ sudo pacman -Rs tesseract plopper
 ```
 3. Remove all your tessdata files inside `/usr/local/share/tessdata` if the uninstall has not already deleted it.
