@@ -8,4 +8,5 @@
 *.TXT
 *.pdf
 *.PDF
+*.DS_Store
 !requirements.txt

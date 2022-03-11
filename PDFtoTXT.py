@@ -8,9 +8,18 @@ from natsort import natsorted # because python string sorts is kinda bad tbh
 import deep_translator
 import progressbar
 
-def usrInput():
-    usrInput.title = str(input("Select the name of the file here\n") or "NONE")
-    usrInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
+
+@click.command()
+@click.option("-i", default='i.pdf', help="Select the input file")
+@click.option("-o", default='output_ocr_file', help="Output name")
+
+def usrInput(i, o):
+    if i == "":
+        usrInput.title = str(input("Select the name of the file here\n") or "NONE")
+        usrInput.output_ocr_file = str(input("Select your .txt output name (without extension) \n") or "output_ocr_file") + ".txt"
+    else:
+        usrInput.title = i
+        usrInput.output_ocr_file = o
     usrInput.deleteCache = True
     if not click.confirm('Delete folders?', default=True): # by default it will delete the folders
         usrInput.deleteCache = False
