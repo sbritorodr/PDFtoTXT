@@ -7,6 +7,7 @@ from pdf2image import convert_from_path
 from natsort import natsorted # because python string sorts is kinda bad tbh
 import deep_translator
 import progressbar
+import inquirer as inq
 
 def usrInput():
     usrInput.title = str(input("Select the name of the file here\n") or "NONE")
@@ -82,7 +83,6 @@ def genOutputTrans():
         pass
 
 def translateOpt():
-    import inquirer as inq
     questions = [
         inq.List('lang',
                 message="Select which language you want to use",
