@@ -9,3 +9,4 @@
 *.pdf
 *.PDF
 !requirements.txt
+.DS_Store
